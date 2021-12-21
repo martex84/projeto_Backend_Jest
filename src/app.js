@@ -22,6 +22,4 @@ class AppControler {
 
 const appControler_express = new AppControler().express;
 
-export {
-    appControler_express
-}
+export default appControler_express;
