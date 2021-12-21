@@ -1,6 +1,10 @@
 {
-  "name": "Projeto Login Jest",
+  "name": "projeto-login-jest",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
 }
