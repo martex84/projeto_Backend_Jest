@@ -1,5 +1,3 @@
-import { Router } from 'express';
+const routes = require('express');
 
-const routes;
-
-export default routes;
+module.exports = routes;
