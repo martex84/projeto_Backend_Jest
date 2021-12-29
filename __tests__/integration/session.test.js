@@ -9,8 +9,6 @@ const objetoUser = require('../utils/objetoUser.js')
 
 describe('Test with options login session', () => {
 
-    // jest.setTimeout(60000);
-
     beforeAll(async () => {
         await db.sync();
     })
@@ -59,7 +57,7 @@ describe('Test with options login session', () => {
 
 
 
-    it.only('Autenticate with invalid user', async () => {
+    it('Autenticate with invalid user', async () => {
 
         await CreateUser();
 
@@ -75,11 +73,11 @@ describe('Test with options login session', () => {
                 email = 'fail';
             }
 
-            const { body } = await supertest(app)
+            const { status } = await supertest(app)
                 .get("/session")
                 .send({ email, password });
 
-            expect(body.status).toBe(404);
+            expect(status).toBe(401);
         }
     })
 })
