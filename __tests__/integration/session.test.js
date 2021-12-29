@@ -3,9 +3,7 @@ const supertest = require('supertest');
 const app = require('../../src/app.js')
 const db = require('../../src/db.js');
 const truncate = require('../utils/truncate.js');
-const objetoUser = require('../utils/objetoUser.js')
-
-
+const objetoUser = require('../utils/objetoUser.js');
 
 describe('Test with options login session', () => {
 
@@ -52,7 +50,7 @@ describe('Test with options login session', () => {
             .get("/session")
             .send({ email, password });
 
-        expect(body).toBeTruthy();
+        expect(body).toHaveProperty('token');
     })
 
 
@@ -73,11 +71,12 @@ describe('Test with options login session', () => {
                 email = 'fail';
             }
 
-            const { status } = await supertest(app)
+            const { status, body } = await supertest(app)
                 .get("/session")
                 .send({ email, password });
 
             expect(status).toBe(401);
+            expect(body).not.toHaveProperty('token');
         }
     })
 })

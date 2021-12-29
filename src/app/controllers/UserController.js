@@ -1,7 +1,6 @@
-const res = require('express/lib/response');
-const UserServices = require('../services/UserServices.js')
+const UserServices = require('../services/UserServices.js');
 const cryptography = require('../utils/cryptographyPassword.js')
-
+const manageToken = require('../utils/manageToken.js');
 class UserController {
     async autenticate(req, res) {
         const body = req.body;
@@ -19,7 +18,9 @@ class UserController {
                 message: 'Email or Password Incorrect!'
             })
 
-            return res.status(200).send(decryptionPassword);
+            const token = manageToken.sign(data.dataValues.id);
+
+            return res.status(200).send(token);
         })
     }
 
