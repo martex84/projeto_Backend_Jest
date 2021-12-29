@@ -4,6 +4,7 @@ const app = require('../../src/app.js')
 const db = require('../../src/db.js');
 const truncate = require('../utils/truncate.js');
 const objetoUser = require('../utils/objetoUser.js');
+const factory = require('../utils/factory.js');
 
 describe('Test with options login session', () => {
 
@@ -33,16 +34,18 @@ describe('Test with options login session', () => {
 
     it('Create User', async () => {
         //Test send value to port session
-        const body = await CreateUser();
+        const body = await factory.create('User');
 
-        expect(body.name).toBe(objetoUser.name);
-        expect(body.email).toBe(objetoUser.email);
-        expect(body.password_hash).not.toBe(objetoUser.password_hash);
+        const { name, email, password_hash } = body.dataValues;
+
+        expect(name).toBe(objetoUser.name);
+        expect(email).toBe(objetoUser.email);
+        expect(password_hash).not.toBe(objetoUser.password_hash);
     })
 
     it('Autenticate with valid user', async () => {
         //Create user
-        await CreateUser();
+        await factory.create('User');
 
         const { email, password } = objetoUser;
 
@@ -57,7 +60,7 @@ describe('Test with options login session', () => {
 
     it('Autenticate with invalid user', async () => {
 
-        await CreateUser();
+        await factory.create('User');
 
         let email = '';
         const password = 'fail';
@@ -80,12 +83,3 @@ describe('Test with options login session', () => {
         }
     })
 })
-
-async function CreateUser() {
-    const { body } = await supertest(app)
-        .post("/user")
-        .send(objetoUser);
-
-    return body;
-}
-
