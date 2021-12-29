@@ -2,10 +2,13 @@ const routes = require('express').Router();
 
 const UserController = require('./app/controllers/UserController.js')
 
-routes.post('/sessions', (req, res) => {
+routes.get('/session', async (req, res) => {
+    await UserController.autenticate(req).then(data => {
+        res.json(data);
+    })
 
 
-    UserController.store()
+
 })
 
 routes.post('/user', async (req, res) => {
