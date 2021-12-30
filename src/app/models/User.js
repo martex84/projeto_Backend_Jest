@@ -7,7 +7,8 @@ const Users = database.define('Users', {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.VIRTUAL,
-    password_hash: DataTypes.STRING
+    password_hash: DataTypes.STRING,
+    access: DataTypes.STRING
 },
     {
         hooks: {

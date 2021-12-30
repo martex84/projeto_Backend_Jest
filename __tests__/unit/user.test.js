@@ -39,4 +39,13 @@ describe.skip('Test used for unit in Users', () => {
 
         expect(token).toHaveProperty('token');
     })
+
+    it('Decode Token', async () => {
+        const token = manageToken.sign({ id: 1 });
+
+        const decode = await manageToken.decode(token);
+
+        expect(decode.id).toHaveProperty('id', 1);
+
+    })
 })
