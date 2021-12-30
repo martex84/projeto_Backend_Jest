@@ -1,6 +1,10 @@
-import express from 'express';
+require('dotenv').config({
+    path: process.env.NODE_ENV === "test" ? ".env.test" : ".env"
+})
 
-import routes from './routes.js'
+const express = require('express');
+
+const routes = require('./routes.js')
 
 class AppControler {
     constructor() {
@@ -20,6 +24,4 @@ class AppControler {
 
 }
 
-const appControler_express = new AppControler().express;
-
-export default appControler_express;
+module.exports = new AppControler().express;
