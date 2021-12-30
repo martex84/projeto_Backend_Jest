@@ -1,8 +1,7 @@
 const { factory } = require('factory-girl');
 
-const objetoUser = require('./objetoUser.js');
 const User = require('../../src/app/models/User.js');
 
-factory.define('User', User, objetoUser)
+factory.define('User', User, {})
 
 module.exports = factory;

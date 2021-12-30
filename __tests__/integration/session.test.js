@@ -1,4 +1,5 @@
 const supertest = require('supertest');
+const faker = require('faker');
 
 const app = require('../../src/app.js')
 const db = require('../../src/db.js');
@@ -7,6 +8,12 @@ const objetoUser = require('../utils/objetoUser.js');
 const factory = require('../utils/factory.js');
 
 describe('Test with options login session', () => {
+
+    const userMain = {
+        name: faker.name.findName(),
+        email: faker.internet.email(),
+        password: faker.internet.password()
+    }
 
     beforeAll(async () => {
         await db.sync();
@@ -34,20 +41,20 @@ describe('Test with options login session', () => {
 
     it('Create User', async () => {
         //Test send value to port session
-        const body = await factory.create('User');
+        const body = await factory.create('User', userMain);
 
         const { name, email, password_hash } = body.dataValues;
 
-        expect(name).toBe(objetoUser.name);
-        expect(email).toBe(objetoUser.email);
-        expect(password_hash).not.toBe(objetoUser.password_hash);
+        expect(name).toBe(userMain.name);
+        expect(email).toBe(userMain.email);
+        expect(password_hash).not.toBe(userMain.password);
     })
 
     it('Autenticate with valid user', async () => {
         //Create user
-        await factory.create('User');
+        await factory.create('User', userMain);
 
-        const { email, password } = objetoUser;
+        const { email, password } = userMain;
 
         const { body } = await supertest(app)
             .get("/session")
@@ -60,14 +67,14 @@ describe('Test with options login session', () => {
 
     it('Autenticate with invalid user', async () => {
 
-        await factory.create('User');
+        await factory.create('User', userMain);
 
         let email = '';
         const password = 'fail';
 
         for (let i = 0; i <= 1; i++) {
             //Use true email for test
-            if (i === 0) email = objetoUser.email;
+            if (i === 0) email = userMain.email;
 
             //Use false email for test
             else {
