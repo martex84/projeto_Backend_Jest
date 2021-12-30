@@ -7,7 +7,7 @@ const objetoUser = require('../utils/objetoUser.js')
 const cryptographyPassword = require('../../src/app/utils/cryptographyPassword.js');
 const manageToken = require('../../src/app/utils/manageToken.js');
 
-describe('Test used for unit in Users', () => {
+describe.skip('Test used for unit in Users', () => {
     beforeAll(async () => {
         await db.sync();
     })

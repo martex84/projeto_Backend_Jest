@@ -7,7 +7,7 @@ const truncate = require('../utils/truncate.js');
 const manageToken = require('../../src/app/utils/manageToken.js');
 const factory = require('../utils/factory.js');
 
-describe.skip('Test with options login session', () => {
+describe('Test with options login session', () => {
 
     const userMain = {
         name: faker.name.findName(),
@@ -106,12 +106,13 @@ describe.skip('Test with options login session', () => {
 
         const valueReturn = await supertest(app)
             .get("/admin")
-            .send('Authorization', `Bearer ${token.token}`, { email, access });
+            .set('Authorization', `Bearer ${token.token}`)
+            .send({ email, access });
 
         expect(valueReturn.status).toBe(200);
     })
 
-    it.only('Access route administration with invalid user', async () => {
+    it('Access route administration with invalid user', async () => {
         const user = await factory.create('User', userMain);
 
         const body = user.dataValues;
@@ -122,7 +123,23 @@ describe.skip('Test with options login session', () => {
 
         const valueReturn = await supertest(app)
             .get("/admin")
-            .set('Authorization', `Bearer ${token.token}`)
+            .set('Authorization', `Bearer 00000000`)
+            .send({ email, access });
+
+        expect(valueReturn.status).toBe(401);
+    })
+
+    it.only('Access route administration without token', async () => {
+        const user = await factory.create('User', userMain);
+
+        const body = user.dataValues;
+
+        const { email, access, id } = body;
+
+        const token = manageToken.sign(id);
+
+        const valueReturn = await supertest(app)
+            .get("/admin")
             .send({ email, access });
 
         expect(valueReturn.status).toBe(401);
