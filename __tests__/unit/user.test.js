@@ -1,3 +1,5 @@
+const { promisify } = require('util');
+
 const truncate = require('../utils/truncate.js');
 const User = require('../../src/app/models/User.js');
 const db = require('../../src/db.js');
@@ -5,7 +7,7 @@ const objetoUser = require('../utils/objetoUser.js')
 const cryptographyPassword = require('../../src/app/utils/cryptographyPassword.js');
 const manageToken = require('../../src/app/utils/manageToken.js');
 
-describe.skip('Test used for unit in Users', () => {
+describe('Test used for unit in Users', () => {
     beforeAll(async () => {
         await db.sync();
     })
@@ -40,10 +42,10 @@ describe.skip('Test used for unit in Users', () => {
         expect(token).toHaveProperty('token');
     })
 
-    it('Decode Token', async () => {
+    it.only('Verify Token', async () => {
         const token = manageToken.sign({ id: 1 });
 
-        const decode = await manageToken.decode(token);
+        let decode = await manageToken.verify(token.token);
 
         expect(decode.id).toHaveProperty('id', 1);
 

@@ -8,13 +8,13 @@ function sign(data) {
     return { token };
 }
 
-async function decode(data) {
-    const value = await jsonWebToken.decode(data.token, env);
-
-    return value;
+function verify(token) {
+    return new Promise((resolve) => {
+        resolve(jsonWebToken.verify(token, env))
+    })
 }
 
 module.exports = {
     sign,
-    decode
+    verify
 }
