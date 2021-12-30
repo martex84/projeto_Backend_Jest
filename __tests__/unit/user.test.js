@@ -42,12 +42,20 @@ describe('Test used for unit in Users', () => {
         expect(token).toHaveProperty('token');
     })
 
-    it.only('Verify Token', async () => {
+    it('Verify Token', async () => {
         const token = manageToken.sign({ id: 1 });
 
         let decode = await manageToken.verify(token.token);
 
         expect(decode.id).toHaveProperty('id', 1);
 
+    })
+
+    it.only('Verify Token invalid', async () => {
+        const token = manageToken.sign({ id: 1 });
+
+        let decode = await manageToken.verify('000000');
+
+        expect(decode.value).toBeFalsy();
     })
 })

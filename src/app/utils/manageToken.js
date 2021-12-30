@@ -10,7 +10,18 @@ function sign(data) {
 
 function verify(token) {
     return new Promise((resolve) => {
-        resolve(jsonWebToken.verify(token, env))
+        let value;
+
+        try {
+            value = jsonWebToken.verify(token, env);
+            resolve(value);
+        } catch (error) {
+            console.log(error.message)
+            resolve({
+                message: error.message,
+                value: false
+            });
+        }
     })
 }
 
